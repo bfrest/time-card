@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import TodaysHours from './TodaysHours';
 import styled from 'styled-components';
 
 const TimerStyle = styled.div`
@@ -67,7 +68,14 @@ export default function Timer() {
         </button>
         <button
           onClick={() => {
+            let hours;
             setRunning(null);
+            if (hoursWorked === null) {
+              hours = [time];
+            } else {
+              hours = [...hoursWorked, time];
+            }
+            setHoursWorked(hours);
             // add the time to worked state
             // show all times added on that day with timestamp
             // if the time was added to same cost code && job, add time to previously logged time
@@ -84,6 +92,7 @@ export default function Timer() {
           Reset
         </button>
       </span>
+      {hoursWorked && <TodaysHours todaysHours={hoursWorked} />}
     </TimerStyle>
   );
 }
