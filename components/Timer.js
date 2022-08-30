@@ -15,14 +15,14 @@ const TimerStyle = styled.div`
     margin: 0 1rem;
   }
   span {
-    padding: 0.5rem;
-    text-align: center;
+    padding: 2rem;
   }
 `;
 
 export default function Timer() {
   const [running, setRunning] = useState(null);
   const [time, setTime] = useState(0);
+  const [hoursWorked, setHoursWorked] = useState(null);
 
   useEffect(() => {
     let interval = null;
@@ -39,13 +39,22 @@ export default function Timer() {
       clearInterval(interval);
     };
   }, [running]);
+
   return (
     <TimerStyle>
+      {/* 
+        timer should show all hours totaled up for the day
+        toggle switch to show todays breakdown ontop of total hours worked 
+        i.e. machine name, job name,  
+      */}
+
       <div>
-        <span>{('0' + Math.floor((time / 3600000) % 24)).slice(-2)}:</span>
-        <span>{('0' + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-        <span>{('0' + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
-        <span>{('0' + Math.floor((time / 10) % 100)).slice(-2)}</span>
+        <span>
+          {('0' + Math.floor((time / 3600000) % 24)).slice(-2)}:
+          {('0' + Math.floor((time / 60000) % 60)).slice(-2)}:
+          {('0' + Math.floor((time / 1000) % 60)).slice(-2)}:
+          {('0' + Math.floor((time / 10) % 100)).slice(-2)}
+        </span>
       </div>
 
       <span>
@@ -54,9 +63,18 @@ export default function Timer() {
             setRunning(true);
           }}
         >
-          Start
+          Clock In
         </button>
-        <button onClick={() => setRunning(null)}>Pause</button>
+        <button
+          onClick={() => {
+            setRunning(null);
+            // add the time to worked state
+            // show all times added on that day with timestamp
+            // if the time was added to same cost code && job, add time to previously logged time
+          }}
+        >
+          Clock Out
+        </button>
         <button
           onClick={() => {
             setRunning(null);
